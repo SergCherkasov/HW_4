@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -127,6 +128,71 @@ namespace HW_4.CalculatorMechanics
             }
 
             return output;
+        }
+        public double Counting(string input)
+        {
+            double result = 0;
+            Stack<double> temp = new Stack<double>();
+
+            var culture = new CultureInfo("en-US")
+            {
+                NumberFormat =
+                {
+                    NumberDecimalSeparator=",",
+                }
+            };
+
+            if (input == string.Empty)
+            {
+                return 0;
+            }
+
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                string a = string.Empty;
+
+                if (i == 0 && input[i] == '-' || input[i] == '-' && Char.IsDigit(input[i + 1]) && i + 1 < input.Length && input[i - 1] != ')')
+                {
+                    a += input[i];
+                    i++;
+                }
+
+                if (Char.IsDigit(input[i]) || input[i] == ',')
+                {
+                    while (!IsDelimeter(input[i]) && !IsOperator(input[i]))
+                    {
+                        a += input[i];
+                        i++;
+                        if (input[i] == input.Length) { break; }
+                    }
+                    temp.Push(double.Parse(a, NumberStyles.Any, culture));
+                    i--;
+                }
+                else if (IsOperator(input[i]))
+                {
+                    double x = temp.Pop();
+                    double y = temp.Pop();
+
+                    switch (input[i])
+                    {
+                        case '+': result = y + x; break;
+                        case '-': result = y - x; break;
+                        case '*': result = y * x; break;
+                        case '/':
+                            if (x == 0)
+                            {
+                                Console.WriteLine("Dividing by zero! Result will be undefined!");
+                            }
+                            result = y / x; break;
+                    }
+
+                    temp.Push(result);
+                }
+
+            }
+
+            return temp.Peek();
         }
 
         private bool IsDelimeter(char c)
