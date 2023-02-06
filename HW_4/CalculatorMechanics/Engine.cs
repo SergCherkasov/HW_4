@@ -59,5 +59,14 @@ namespace HW_4.CalculatorMechanics
             }
             return input;
         }
+
+        private bool IsDelimeter(char c)
+        {
+            if ((" =".IndexOf(c) != -1))
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
