@@ -59,6 +59,75 @@ namespace HW_4.CalculatorMechanics
             }
             return input;
         }
+        public string TransformExpression(string input)
+        {
+            string output = string.Empty;
+            Stack<char> forOperatorsStack = new Stack<char>();
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (IsDelimeter(input[i]))
+                    continue;
+
+                if (i == 0 && input[i] == '-' || input[i] == '-' && IsOperator(input[i - 1]) && input[i - 1] != ')')
+                {
+                    output += input[i];
+                    i++;
+                }
+
+                if (Char.IsDigit(input[i]) || input[i] == ',')
+                {
+                    while (!IsDelimeter(input[i]) && !IsOperator(input[i]))
+                    {
+                        output += input[i];
+                        i++;
+
+                        if (i == input.Length)
+                            break;
+                    }
+
+                    output += " ";
+                    i--;
+                }
+
+                if (IsOperator(input[i]))
+                {
+                    if (input[i] == '(')
+                    {
+                        forOperatorsStack.Push(input[i]);
+                    }
+                    else if (input[i] == ')')
+                    {
+                        char s = forOperatorsStack.Pop();
+
+                        while (s != '(')
+                        {
+                            output += s.ToString() + ' ';
+                            s = forOperatorsStack.Pop();
+                        }
+                    }
+                    else
+                    {
+                        if (forOperatorsStack.Count > 0)
+                            if (GetPriority(input[i]) <= GetPriority(forOperatorsStack.Peek()))
+                                output += forOperatorsStack.Pop().ToString() + ' ';
+
+                        forOperatorsStack.Push(char.Parse(input[i].ToString()));
+
+                    }
+
+
+                }
+
+            }
+
+            while (forOperatorsStack.Count > 0)
+            {
+                output += forOperatorsStack.Pop() + " ";
+            }
+
+            return output;
+        }
 
         private bool IsDelimeter(char c)
         {
