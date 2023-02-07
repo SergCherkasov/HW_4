@@ -18,29 +18,29 @@ namespace HW_4.UserInterface
         public void Calculate()
         {
             Engine cm = new Engine();
-            do
-            {
-                Console.Clear();
-                io.WriteLine($"\tWELCOME TO CALCULATOR APP!");
-                Console.WriteLine();
-                io.WriteLine("Enter expression:");
+            //do
+            //{
+            //    //Console.Clear();
+            io.WriteLine($"\tWELCOME TO CALCULATOR APP!");
+            Console.WriteLine();
+            io.WriteLine("Enter expression:");
 
-                string exp = io.Readline();                
-                exp = cm.SyntaxAnalyz(exp);
-                Console.WriteLine();
-                io.WriteLine("Result of Your expression:");
-                Console.ForegroundColor = ConsoleColor.Green;
-                string transformExp = string.Empty;
-                transformExp = cm.TransformExpression(exp);
-                var result = cm.Counting(transformExp);
-                io.WriteLine(result.ToString());
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine("Press any Key to Continue...\nPress ESC for EXIT.");
+            string exp = io.Readline();
+            exp = cm.SyntaxAnalyz(exp);
+            Console.WriteLine();
+            io.WriteLine("Result of Your expression:");
+            Console.ForegroundColor = ConsoleColor.Green;
+            string transformExp = string.Empty;
+            transformExp = cm.TransformExpression(exp);
+            var result = cm.Counting(transformExp);
+            io.WriteLine(result.ToString());
+            Console.ForegroundColor = ConsoleColor.White;
+            //    Console.WriteLine();
+            //    Console.WriteLine();
+            //    Console.WriteLine("Press any Key to Continue...\nPress ESC for EXIT.");
 
-            }
-            while (Console.ReadKey().Key != ConsoleKey.Escape);
+            //}
+            //while (Console.ReadKey().Key != ConsoleKey.Escape);
         }
 
         public interface IInputOutput
