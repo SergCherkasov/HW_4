@@ -9,25 +9,31 @@ namespace HW_4.UserInterface
 {
     public class UInterface
     {
+        private IInputOutput io;
+
+        public UInterface(IInputOutput io)
+        {
+            this.io = io;
+        }
         public void Calculate()
         {
             Engine cm = new Engine();
             do
             {
                 Console.Clear();
-                Console.WriteLine($"\tWELCOME TO CALCULATOR APP!");
+                io.WriteLine($"\tWELCOME TO CALCULATOR APP!");
                 Console.WriteLine();
-                Console.WriteLine("Enter expression:");
+                io.WriteLine("Enter expression:");
 
-                string exp = Console.ReadLine();                
+                string exp = io.Readline();                
                 exp = cm.SyntaxAnalyz(exp);
                 Console.WriteLine();
-                Console.WriteLine("Result of Your expression:");
+                io.WriteLine("Result of Your expression:");
                 Console.ForegroundColor = ConsoleColor.Green;
                 string transformExp = string.Empty;
                 transformExp = cm.TransformExpression(exp);
                 var result = cm.Counting(transformExp);
-                Console.WriteLine(result);
+                io.WriteLine(result.ToString());
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine();
                 Console.WriteLine();
@@ -35,6 +41,19 @@ namespace HW_4.UserInterface
 
             }
             while (Console.ReadKey().Key != ConsoleKey.Escape);
+        }
+
+        public interface IInputOutput
+        {
+            string Readline();
+
+            void WriteLine(string str);
+        }
+        public class ConsoleIO : IInputOutput
+        {
+            public string Readline() => Console.ReadLine();
+            public void WriteLine(string str) => Console.WriteLine(str);
+
         }
     }
 }
